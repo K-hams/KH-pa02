@@ -111,7 +111,7 @@ int main(int argc, char** argv){
             });
         //printing prefMovie in order based by ranking
             for (auto& x: prefMovie){
-                cout << x.first << ": " << x.second << endl;
+                cout << x.first << ", " << x.second << endl;
         
             }
         
@@ -121,6 +121,9 @@ int main(int argc, char** argv){
         }
 
     }
+
+    //sorting prefixes
+    std::sort(prefixes.begin(),prefixes.end());
 
     //printing best movie
     int i = 0;
