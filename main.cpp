@@ -81,7 +81,7 @@ int main(int argc, char** argv){
     //adding to best movies vector
     vector<pair<string,double>> bestM;
 
-  for(auto x: prefixes){
+  for(auto& x: prefixes){
     vector<pair<string,double>> prefMovie;
     bool havePref =false;
 
@@ -90,15 +90,17 @@ int main(int argc, char** argv){
                 prefMovie.push_back(*it);
                 havePref = true;
             }
+            else{
+                break;
+            }
             
         }
-        
+
         //  If no movie with that prefix exists print the following message
         if (!havePref){
             cout << "No movies found with prefix " << x << endl;
         }
-
-        
+        else{
     
             std::sort(prefMovie.begin(), prefMovie.end(), [](const auto& a, const auto& b) {
                 if (a.second != b.second){
@@ -108,7 +110,7 @@ int main(int argc, char** argv){
                 return a.first < b.first;
             });
         //printing prefMovie in order based by ranking
-            for (auto x: prefMovie){
+            for (auto& x: prefMovie){
                 cout << x.first << ": " << x.second << endl;
         
             }
@@ -116,6 +118,7 @@ int main(int argc, char** argv){
         bestM.push_back(prefMovie[0]);
         //gap for aesthetics
         cout << endl;
+        }
 
     }
 
@@ -126,12 +129,6 @@ int main(int argc, char** argv){
             cout << "Best movie with prefix " << x << " is: "<< bestM[i].first<< " with rating " << std::fixed << std::setprecision(1) << bestM[i].second<< endl;
             i++;
     }
-
-  
-
-      
-
-    
 
     return 0;
 }
