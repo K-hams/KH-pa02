@@ -54,7 +54,7 @@ int main(int argc, char** argv){
 
     if (argc == 2){
         for(auto it = movies.begin(); it != movies.end(); it++){
-        cout << it->first << ", " << fixed << setprecision(1) << it->second << endl;
+            cout << it->first << ", " << fixed << setprecision(1) << it->second << endl;
         }
         
             //print all the movies in ascending alphabetical order of movie names
@@ -80,6 +80,7 @@ int main(int argc, char** argv){
     
     //adding to best movies vector
     vector<pair<string,double>> bestM;
+    vector<string> bestPref;
 
   for(auto& x: prefixes){
     vector<pair<string,double>> prefMovie;
@@ -88,6 +89,7 @@ int main(int argc, char** argv){
     for(auto it = movies.lower_bound(x); it != movies.end(); it++){
             if (it->first.substr(0, x.size()) == x){
                 prefMovie.push_back(*it);
+                bestPref.push_back(x);
                 havePref = true;
             }
             else{
@@ -102,9 +104,10 @@ int main(int argc, char** argv){
         }
         else{
     
+            //sorting prefMovie in order of rank
             std::sort(prefMovie.begin(), prefMovie.end(), [](const auto& a, const auto& b) {
                 if (a.second != b.second){
-                    return a.second>b.second;
+                    return a.second> b.second;
                 }
 
                 return a.first < b.first;
@@ -122,12 +125,10 @@ int main(int argc, char** argv){
 
     }
 
-    //sorting prefixes
-    std::sort(prefixes.begin(),prefixes.end());
 
     //printing best movie
     int i = 0;
-    for (auto x: prefixes){
+    for (auto x: bestPref){
             //printing best
             cout << "Best movie with prefix " << x << " is: "<< bestM[i].first<< " with rating " << std::fixed << std::setprecision(1) << bestM[i].second<< endl;
             i++;
@@ -147,19 +148,3 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
     }
     return true;
 }
-
-
-
-
-
-/* Add your run time analysis for part 3 of the assignment here as commented block*/
-/*
-bool parseLine(string &line, string &movieName, double &movieRating) {
-    int commaIndex = line.find_last_of(",");
-    movieName = line.substr(0, commaIndex);
-    movieRating = stod(line.substr(commaIndex+1));
-    if (movieName[0] == '\"') {
-        movieName = movieName.substr(1, movieName.length() - 2);
-    }
-    return true;
-}*/
