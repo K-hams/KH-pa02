@@ -1,6 +1,6 @@
 // Winter'24
 // Instructor: Diba Mirza
-// Student name: 
+// Student name: Katelyn Hamel
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,6 +13,7 @@
 #include <set>
 #include <queue>
 #include <sstream>
+#include <map>
 using namespace std;
 
 #include "utilities.h"
@@ -35,6 +36,7 @@ int main(int argc, char** argv){
     }
   
     // Create an object of a STL data-structure to store all the movies
+    std::map<string, double> movies;
 
     string line, movieName;
     double movieRating;
@@ -42,13 +44,19 @@ int main(int argc, char** argv){
     while (getline (movieFile, line) && parseLine(line, movieName, movieRating)){
             // Use std::string movieName and double movieRating
             // to construct your Movie objects
-            // cout << movieName << " has rating " << movieRating << endl;
+            
+            //cout << movieName << " has rating " << movieRating << endl;
             // insert elements into your data structure
+            movies[movieName] = movieRating;
     }
 
     movieFile.close();
 
     if (argc == 2){
+        for(auto it = movies.begin(); it != movies.end(); it++){
+        cout << it->first << ", " << fixed << setprecision(1) << it->second << endl;
+        }
+        
             //print all the movies in ascending alphabetical order of movie names
             return 0;
     }
@@ -69,12 +77,58 @@ int main(int argc, char** argv){
 
     //  For each prefix,
     //  Find all movies that have that prefix and store them in an appropriate data structure
-    //  If no movie with that prefix exists print the following message
-    cout << "No movies found with prefix "<<"<replace with prefix>" << endl;
+    
+    //adding to best movies vector
+    vector<pair<string,double>> bestM;
 
-    //  For each prefix,
-    //  Print the highest rated movie with that prefix if it exists.
-    cout << "Best movie with prefix " << "<replace with prefix>" << " is: " << "replace with movie name" << " with rating " << std::fixed << std::setprecision(1) << "replace with movie rating" << endl;
+  for(auto x: prefixes){
+    vector<pair<string,double>> prefMovie;
+
+    for(auto it = movies.begin(); it != movies.end(); it++){
+            if (it->first.substr(0, x.size()) == x){
+                prefMovie.push_back(*it);
+            }
+        }
+
+        //  If no movie with that prefix exists print the following message
+        if (prefMovie.empty()){
+            cout << "No movies found with prefix " << x << endl;
+        }
+
+        else{
+            std::sort(prefMovie.begin(), prefMovie.end(), [](const auto& a, const auto& b) {
+                if (a.second != b.second){
+                    return a.second>b.second;
+                }
+
+                return a.first < b.first;
+            });
+        //printing prefMovie in order based by ranking
+            for (auto x: prefMovie){
+                cout << x.first << ": " << x.second << endl;
+        
+            }
+        }
+        
+        bestM.push_back(prefMovie[0]);
+        //gap for aesthetics
+        cout << endl;
+
+    }
+
+    //printing best movie
+    int i = 0;
+    for (auto x: prefixes){
+            //printing best
+            cout << "Best movie with prefix " << x << " is: "<< bestM[i].first<< " with rating " << std::fixed << std::setprecision(1) << bestM[i].second<< endl;
+            i++;
+    }
+
+  
+
+      
+
+    
 
     return 0;
 }
@@ -90,3 +144,19 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
     }
     return true;
 }
+
+
+
+
+
+/* Add your run time analysis for part 3 of the assignment here as commented block*/
+/*
+bool parseLine(string &line, string &movieName, double &movieRating) {
+    int commaIndex = line.find_last_of(",");
+    movieName = line.substr(0, commaIndex);
+    movieRating = stod(line.substr(commaIndex+1));
+    if (movieName[0] == '\"') {
+        movieName = movieName.substr(1, movieName.length() - 2);
+    }
+    return true;
+}*/
