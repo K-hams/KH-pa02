@@ -89,7 +89,6 @@ int main(int argc, char** argv){
     for(auto it = movies.lower_bound(x); it != movies.end(); it++){
             if (it->first.substr(0, x.size()) == x){
                 prefMovie.push_back(*it);
-                bestPref.push_back(x);
                 havePref = true;
             }
             else{
@@ -117,7 +116,8 @@ int main(int argc, char** argv){
                 cout << x.first << ", " << x.second << endl;
         
             }
-        
+            
+        bestPref.push_back(x);
         bestM.push_back(prefMovie[0]);
         //gap for aesthetics
         cout << endl;
