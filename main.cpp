@@ -53,7 +53,7 @@ int main(int argc, char** argv){
     movieFile.close();
 
     if (argc == 2){
-        for(auto it = movies.begin(); it != movies.end(); it++){
+        for(auto it = movies.lower_bound(x); it != movies.end(); it++){
         cout << it->first << ", " << fixed << setprecision(1) << it->second << endl;
         }
         
@@ -87,13 +87,15 @@ int main(int argc, char** argv){
     for(auto it = movies.begin(); it != movies.end(); it++){
             if (it->first.substr(0, x.size()) == x){
                 prefMovie.push_back(*it);
+            }        
+            //  If no movie with that prefix exists print the following message
+
+            else{
+                cout << "No movies found with prefix " << x << endl;
             }
         }
 
-        //  If no movie with that prefix exists print the following message
-        if (prefMovie.empty()){
-            cout << "No movies found with prefix " << x << endl;
-        }
+        
 
         else{
             std::sort(prefMovie.begin(), prefMovie.end(), [](const auto& a, const auto& b) {
