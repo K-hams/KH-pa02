@@ -83,17 +83,22 @@ int main(int argc, char** argv){
 
   for(auto x: prefixes){
     vector<pair<string,double>> prefMovie;
+    bool havePref =false;
 
     for(auto it = movies.lower_bound(x); it != movies.end(); it++){
             if (it->first.substr(0, x.size()) == x){
                 prefMovie.push_back(*it);
+                havePref = true;
             }
-            else{
-                cout << "No movies found with prefix " << x << endl;
-            }
+            
+        }
+        
+        //  If no movie with that prefix exists print the following message
+        if (!havePref){
+            cout << "No movies found with prefix " << x << endl;
         }
 
-        //  If no movie with that prefix exists print the following message
+        
     
             std::sort(prefMovie.begin(), prefMovie.end(), [](const auto& a, const auto& b) {
                 if (a.second != b.second){
